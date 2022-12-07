@@ -1,7 +1,7 @@
 import pathlib
 import pytest
 import aoc202207 as aoc
-from bigtree import Node, tree_to_dict
+from bigtree import tree_to_dict
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
 

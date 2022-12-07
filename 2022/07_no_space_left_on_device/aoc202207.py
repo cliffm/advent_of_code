@@ -1,5 +1,5 @@
 import argparse
-from bigtree import Node, find_path, print_tree, findall, find_attr
+from bigtree import Node, find_path, findall
 
 
 def parse(filename):
