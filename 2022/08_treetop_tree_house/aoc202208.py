@@ -1,4 +1,11 @@
 import argparse
+from enum import Enum
+
+class Direction(Enum):
+    UP = 1
+    DOWN = 2
+    LEFT = 3
+    RIGHT = 4
 
 
 def parse(filename):
@@ -11,10 +18,10 @@ def parse(filename):
     return matrix
 
 
-def part1(puzzle_data):
+def part1(puzzle_data: []) -> int:
     """Solve part 1."""
     visible_trees = 0
-    rows = len(puzzle_data)
+    rows: int = len(puzzle_data)
 
     for i in range(rows):
         cols = len(puzzle_data[i])
@@ -22,19 +29,19 @@ def part1(puzzle_data):
             # count edges
             if i == 0 or i == rows - 1 or j == 0 or j == cols - 1:
                 visible_trees += 1
-            elif check_direction("up", puzzle_data, i, j):
+            elif check_direction(Direction.UP, puzzle_data, i, j):
                 visible_trees += 1
-            elif check_direction("down", puzzle_data, i, j):
+            elif check_direction(Direction.DOWN, puzzle_data, i, j):
                 visible_trees += 1
-            elif check_direction("left", puzzle_data, i, j):
+            elif check_direction(Direction.LEFT, puzzle_data, i, j):
                 visible_trees += 1
-            elif check_direction("right", puzzle_data, i, j):
+            elif check_direction(Direction.RIGHT, puzzle_data, i, j):
                 visible_trees += 1
 
     return visible_trees
 
 
-def part2(puzzle_data):
+def part2(puzzle_data: []) -> int:
     """Solve part 2."""
     scenic_scores = []
 
@@ -47,33 +54,33 @@ def part2(puzzle_data):
             if i == 0 or i == rows - 1 or j == 0 or j == cols - 1:
                 continue
 
-            up_score = get_scenic_score("up", puzzle_data, i, j)
-            down_score = get_scenic_score("down", puzzle_data, i, j)
-            left_score = get_scenic_score("left", puzzle_data, i, j)
-            right_score = get_scenic_score("right", puzzle_data, i, j)
+            up_score = get_scenic_score(Direction.UP, puzzle_data, i, j)
+            down_score = get_scenic_score(Direction.DOWN, puzzle_data, i, j)
+            left_score = get_scenic_score(Direction.LEFT, puzzle_data, i, j)
+            right_score = get_scenic_score(Direction.RIGHT, puzzle_data, i, j)
 
             scenic_scores.append(up_score * down_score * left_score * right_score)
 
     return max(scenic_scores)
 
 
-def get_scenic_score(direction, matrix, row, col):
+def get_scenic_score(direction: Direction, matrix: [], row: int, col: int) -> int:
     scenic_score = 0
     tree = matrix[row][col]
     match direction:
-        case "up":
+        case Direction.UP:
             for i in range(row - 1, -1, -1):
                 scenic_score += 1
                 if tree <= matrix[i][col]: break
-        case "down":
+        case Direction.DOWN:
             for i in range(row + 1, len(matrix)):
                 scenic_score += 1
                 if tree <= matrix[i][col]: break
-        case "left":
+        case Direction.LEFT:
             for j in range(col - 1, -1, -1):
                 scenic_score += 1
                 if tree <= matrix[row][j]: break
-        case "right":
+        case Direction.RIGHT:
             for j in range(col + 1, len(matrix[row])):
                 scenic_score += 1
                 if tree <= matrix[row][j]: break
@@ -81,26 +88,26 @@ def get_scenic_score(direction, matrix, row, col):
     return scenic_score
 
 
-def check_direction(direction, matrix, row, col):
+def check_direction(direction: Direction, matrix: [], row: int, col: int) -> bool:
     visible = True
     tree = matrix[row][col]
     match direction:
-        case "up":
+        case Direction.UP:
             for i in range(row - 1, -1, -1):
                 if tree <= matrix[i][col]:
                     visible = False
                     break
-        case "down":
+        case Direction.DOWN:
             for i in range(row + 1, len(matrix)):
                 if tree <= matrix[i][col]:
                     visible = False
                     break
-        case "left":
+        case Direction.LEFT:
             for j in range(col - 1, -1, -1):
                 if tree <= matrix[row][j]:
                     visible = False
                     break
-        case "right":
+        case Direction.RIGHT:
             for j in range(col + 1, len(matrix[row])):
                 if tree <= matrix[row][j]:
                     visible = False
