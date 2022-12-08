@@ -63,32 +63,20 @@ def get_scenic_score(direction, matrix, row, col):
     match direction:
         case "up":
             for i in range(row - 1, -1, -1):
-                if tree > matrix[i][col]:
-                    scenic_score += 1
-                else:
-                    scenic_score += 1
-                    break
+                scenic_score += 1
+                if tree <= matrix[i][col]: break
         case "down":
             for i in range(row + 1, len(matrix)):
-                if tree > matrix[i][col]:
-                    scenic_score += 1
-                else:
-                    scenic_score += 1
-                    break
+                scenic_score += 1
+                if tree <= matrix[i][col]: break
         case "left":
             for j in range(col - 1, -1, -1):
-                if tree > matrix[row][j]:
-                    scenic_score += 1
-                else:
-                    scenic_score += 1
-                    break
+                scenic_score += 1
+                if tree <= matrix[row][j]: break
         case "right":
             for j in range(col + 1, len(matrix[row])):
-                if tree > matrix[row][j]:
-                    scenic_score += 1
-                else:
-                    scenic_score += 1
-                    break
+                scenic_score += 1
+                if tree <= matrix[row][j]: break
 
     return scenic_score
 
