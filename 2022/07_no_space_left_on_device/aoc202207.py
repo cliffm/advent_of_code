@@ -73,7 +73,7 @@ def solve(filename):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Tuning Trouble")
+    parser = argparse.ArgumentParser(description="No space left on device")
     parser.add_argument("-i", dest="filename", required=True, metavar="FILE")
     args = parser.parse_args()
 
