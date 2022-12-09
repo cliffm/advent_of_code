@@ -1,5 +1,7 @@
 import pathlib
+
 import pytest
+
 import aoc202209 as aoc
 
 PUZZLE_DIR = pathlib.Path(__file__).parent
@@ -40,17 +42,20 @@ def test_parse2(example2_data):
                              ("L", 25),
                              ("U", 20)]
 
-#@pytest.mark.skip(reason="no way of currently testing this")
+
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_part1(example1_data):
     """Test part 1 on example 1 input."""
     assert aoc.part1(example1_data) == 13
 
-#@pytest.mark.skip(reason="no way of currently testing this")
+
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_part2_example1(example1_data):
     """Test part 2 on example 1 input."""
     assert aoc.part2(example1_data) == 1
 
-#@pytest.mark.skip(reason="no way of currently testing this")
+
+# @pytest.mark.skip(reason="no way of currently testing this")
 def test_part2_example2(example2_data):
     """Test part 2 on example 2 input."""
     assert aoc.part2(example2_data) == 36

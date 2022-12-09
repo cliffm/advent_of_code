@@ -3,7 +3,8 @@ from collections import namedtuple
 
 RopeKnot = namedtuple('RopeKnot', 'x y')
 
-def parse(filename):
+
+def parse(filename: str) -> []:
     """Parse input."""
     movement_instructions = []
     with open(filename, "r") as f:
@@ -34,7 +35,6 @@ def part1(puzzle_data: []) -> int:
     return len(tail_visited_locations)
 
 
-
 def part2(puzzle_data: []) -> int:
     head = RopeKnot(0, 0)
     knots = [RopeKnot(0, 0) for _ in range(8)]
@@ -60,54 +60,58 @@ def part2(puzzle_data: []) -> int:
 
     return len(tail_visited_locations)
 
+
 def move_head(head: RopeKnot, direction: str) -> RopeKnot:
     """Move head rope end, one space in specified direction"""
     x, y = head
     match direction:
         case "U":
-            y = head.y + 1
+            y += 1
         case "D":
-            y = head.y - 1
+            y -= 1
         case "L":
-            x = head.x - 1
+            x -= 1
         case "R":
-            x = head.x + 1
+            x += 1
 
     return RopeKnot(x, y)
 
 
 def move_knot(trailing_knot: RopeKnot, prev_knot: RopeKnot) -> RopeKnot:
     """Move trailing knot, if previous knot is farther than one space away"""
-    x, y = trailing_knot
-    # tail is further away from head than one space
-    if abs(prev_knot.x - trailing_knot.x) > 1 or abs(prev_knot.y - trailing_knot.y) > 1:
-        if prev_knot.x == trailing_knot.x:
-            # adjust y
-            if prev_knot.y > trailing_knot.y:
-                y += 1
-            else:
-                y -= 1
-        elif prev_knot.y == trailing_knot.y:
-            # adjust x
-            if prev_knot.x > trailing_knot.x:
-                x += 1
-            else:
-                x -= 1
-        else:
-            if prev_knot.y > trailing_knot.y:
-                y += 1
-            else:
-                y -= 1
+    # return if trailing knot is close o previous knot
+    if abs(prev_knot.x - trailing_knot.x) <= 1 and abs(prev_knot.y - trailing_knot.y) <= 1:
+        return trailing_knot
 
-            if prev_knot.x > trailing_knot.x:
-                x += 1
-            else:
-                x -= 1
+    # adjust location
+    x, y = trailing_knot
+    if prev_knot.x == trailing_knot.x:
+        # adjust y
+        if prev_knot.y > trailing_knot.y:
+            y += 1
+        else:
+            y -= 1
+    elif prev_knot.y == trailing_knot.y:
+        # adjust x
+        if prev_knot.x > trailing_knot.x:
+            x += 1
+        else:
+            x -= 1
+    else:
+        if prev_knot.y > trailing_knot.y:
+            y += 1
+        else:
+            y -= 1
+
+        if prev_knot.x > trailing_knot.x:
+            x += 1
+        else:
+            x -= 1
 
     return RopeKnot(x, y)
 
 
-def solve(filename):
+def solve(filename: str) -> (int, int):
     """Solve the puzzle for the given input."""
     puzzle_data = parse(filename)
     solution1 = part1(puzzle_data)
@@ -117,7 +121,7 @@ def solve(filename):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Treetop Tree House")
+    parser = argparse.ArgumentParser(description="Rope Bridge")
     parser.add_argument("-i", dest="filename", required=True, metavar="FILE")
     args = parser.parse_args()
 
