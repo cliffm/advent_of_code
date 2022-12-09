@@ -60,6 +60,8 @@ def part2(puzzle_data: []) -> int:
 
     return len(tail_visited_locations)
 
+def sign(x):
+    return 0 if x == 0 else x // abs(x)
 
 def move_head(head: RopeKnot, direction: str) -> RopeKnot:
     """Move head rope end, one space in specified direction"""
@@ -79,34 +81,13 @@ def move_head(head: RopeKnot, direction: str) -> RopeKnot:
 
 def move_knot(trailing_knot: RopeKnot, prev_knot: RopeKnot) -> RopeKnot:
     """Move trailing knot, if previous knot is farther than one space away"""
-    # return if trailing knot is close o previous knot
-    if abs(prev_knot.x - trailing_knot.x) <= 1 and abs(prev_knot.y - trailing_knot.y) <= 1:
-        return trailing_knot
-
-    # adjust location
     x, y = trailing_knot
-    if prev_knot.x == trailing_knot.x:
-        # adjust y
-        if prev_knot.y > trailing_knot.y:
-            y += 1
-        else:
-            y -= 1
-    elif prev_knot.y == trailing_knot.y:
-        # adjust x
-        if prev_knot.x > trailing_knot.x:
-            x += 1
-        else:
-            x -= 1
-    else:
-        if prev_knot.y > trailing_knot.y:
-            y += 1
-        else:
-            y -= 1
 
-        if prev_knot.x > trailing_knot.x:
-            x += 1
-        else:
-            x -= 1
+    # if the trailing knot is more than one away in either direction
+    # from the previous knot, adjust the location
+    if any(abs(i - j) > 1 for i, j in zip(prev_knot, trailing_knot)):
+        x += sign(prev_knot.x - trailing_knot.x)
+        y += sign(prev_knot.y - trailing_knot.y)
 
     return RopeKnot(x, y)
 
