@@ -7,7 +7,7 @@ from monkey import Monkey
 monkey_regex = re.compile("Monkey (\d+):")
 div_test_regex = re.compile(r"^\s*Test: divisible by (\d+)")
 operation_regex = re.compile("^\s*Operation: new = (.*)$")
-true_false_regex = re.compile(r"^\s*If (true|false): throw to monkey (\d+)")
+true_false_regex = re.compile(r"^\s*If (?:true|false): throw to monkey (\d+)")
 
 
 def parse(filename: str) -> []:
@@ -16,9 +16,7 @@ def parse(filename: str) -> []:
     with open(filename, "r") as f:
         for monkey in f.read().split("\n\n"):
             (id_str, items_str, operation_str, div_test_str, true_str, false_str) = monkey.split("\n")
-            match = monkey_regex.match(id_str)
-            if match:
-                monkey_id = int(match.group(1))
+            monkey_id = get_number(id_str, monkey_regex)
 
             items = [int(item) for item in items_str.split(":")[1].strip().split(",")]
 
@@ -26,21 +24,22 @@ def parse(filename: str) -> []:
             if match:
                 operation = match.group(1)
 
-            match = div_test_regex.match(div_test_str)
-            if match:
-                div_test = int(match.group(1))
-
-            match = true_false_regex.match(true_str)
-            if match:
-                true = int(match.group(2))
-
-            match = true_false_regex.match(false_str)
-            if match:
-                false = int(match.group(2))
+            div_test = get_number(div_test_str, div_test_regex)
+            true = get_number(true_str, true_false_regex)
+            false = get_number(false_str, true_false_regex)
 
             monkeys.append(Monkey(monkey_id, items, operation, div_test, true, false))
 
     return monkeys
+
+
+def get_number(string: str, regex: re.Pattern[str]) -> int:
+    number = None
+    match = regex.match(string)
+    if match:
+        number = int(match.group(1))
+
+    return number
 
 
 def part1(filename) -> int:
@@ -93,7 +92,7 @@ def solve(filename: str) -> (int, int):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Rope Bridge")
+    parser = argparse.ArgumentParser(description="Monkey in the Middle")
     parser.add_argument("-i", dest="filename", required=True, metavar="FILE")
     args = parser.parse_args()
 
